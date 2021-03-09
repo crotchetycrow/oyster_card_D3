@@ -22,15 +22,6 @@ describe Oystercard do
     end
   end
 
-  describe 'deduct features' do
-
-    it { is_expected.to respond_to(:deduct).with(1).argument }
-
-    it 'decreases the balance by the argument using :deduct' do
-       expect { subject.deduct(10) }.to change { subject.balance }.by(-10)
-    end
-  end
-
   describe 'touch_in' do
     it { is_expected.to respond_to(:touch_in)}
 
@@ -48,8 +39,13 @@ describe Oystercard do
     it { is_expected.to respond_to(:touch_out)}
 
     it 'store a false value if card was touched out' do
-       expect(subject.touch_out).to be(false)
+      expect(subject.touch_out).to be(false)
      end
+
+    it 'deducts card balance by the fare' do
+      expect { subject.touch_out }.to change { subject.balance }.by (-Oystercard::MINIMUM_FARE)
+    end
+
   end
   describe 'in_journey?' do
     it { is_expected.to respond_to(:in_journey?)}

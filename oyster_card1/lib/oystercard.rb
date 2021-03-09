@@ -3,6 +3,7 @@ class Oystercard
   DEFAULT_BALANCE = 0
   MINIMUM_BALANCE = 1
   MAXIMUM_BALANCE = 90
+  MINIMUM_FARE = 1
   # JOURNEY_STATE = "Inactive"
 
   def initialize(balance = DEFAULT_BALANCE)
@@ -16,10 +17,6 @@ class Oystercard
     @balance += amount
   end
 
-  def deduct(amount)
-    @balance -= amount
-  end
-
   def touch_in
     if @balance < MINIMUM_BALANCE
       raise 'Insufficient funds'
@@ -28,6 +25,7 @@ class Oystercard
   end
 
   def touch_out
+    deduct(MINIMUM_FARE)
     @in_journey = false
   end
 
@@ -38,5 +36,12 @@ class Oystercard
       'not in journey'
     end
   end
+
+  private
+  
+  def deduct(amount)
+    @balance -= amount
+  end
+
 
 end
