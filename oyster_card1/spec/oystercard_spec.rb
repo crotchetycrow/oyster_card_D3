@@ -1,6 +1,7 @@
 require 'oystercard'
 
 describe Oystercard do
+
   describe 'when first created' do
     it { is_expected.to respond_to(:balance) }
 
@@ -34,7 +35,12 @@ describe Oystercard do
     it { is_expected.to respond_to(:touch_in)}
 
     it 'store a true value if card was touched in' do
+      subject.top_up(5)
       expect(subject.touch_in).to be(true)
+    end
+
+    it'prevents touch in when balance is below £1' do
+      expect { subject.touch_in }.to raise_error('Insufficient funds')
     end
   end
 
@@ -45,19 +51,18 @@ describe Oystercard do
        expect(subject.touch_out).to be(false)
      end
   end
-     describe 'in_journey?' do
-       it { is_expected.to respond_to(:in_journey?)}
+  describe 'in_journey?' do
+    it { is_expected.to respond_to(:in_journey?)}
 
-       it 'tells if in journey' do
-           subject.touch_in
-           expect(subject.in_journey?).to eq('in journey')
-         end
+    it 'tells if in journey' do
+      subject.top_up(5)
+      subject.touch_in
+      expect(subject.in_journey?).to eq('in journey')
+    end
 
-       it 'tells if in journey' do
-          subject.touch_out
-          expect(subject.in_journey?).to eq('not in journey')
-       end
-     end
-
-
+    it 'tells if not in journey' do
+      subject.touch_out
+      expect(subject.in_journey?).to eq('not in journey')
+    end
+  end
 end

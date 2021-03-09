@@ -1,14 +1,16 @@
 class Oystercard
   attr_reader :balance, :in_journey
   DEFAULT_BALANCE = 0
-  # MAXIMUM_BALANCE = 90
+  MINIMUM_BALANCE = 1
+  MAXIMUM_BALANCE = 90
+  # JOURNEY_STATE = "Inactive"
 
   def initialize(balance = DEFAULT_BALANCE)
     @balance = balance
   end
 
   def top_up(amount)
-    if @balance + amount > 90
+    if @balance + amount > MAXIMUM_BALANCE
       raise "Top up invalid, balance maximum is £90, your current balance is #{@balance}"
     end
     @balance += amount
@@ -19,6 +21,9 @@ class Oystercard
   end
 
   def touch_in
+    if @balance < MINIMUM_BALANCE
+      raise 'Insufficient funds'
+    end
     @in_journey = true
   end
 
