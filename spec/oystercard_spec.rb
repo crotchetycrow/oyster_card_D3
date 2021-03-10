@@ -4,6 +4,7 @@ describe Oystercard do
 
   let(:card) { Oystercard.new(40) }
   let(:testing_station) { double :testing_station }
+  let(:test_exit_station) { double :test_exit_station }
 
   describe 'when first created' do
     it { is_expected.to respond_to(:balance) }
@@ -80,13 +81,19 @@ describe Oystercard do
       expect(card.history).to eq card.stations
     end
 
-    it "stores stations into an array" do
-      expect(card.stations).to eq []
+    it "stores stations into a hash" do
+      expect(card.stations).to eq ({})
     end
 
     it "pushes entry_station into stations array" do
       card.touch_in(testing_station)
-      expect(card.stations).to eq [testing_station]
+      expect(card.stations).to eq({testing_station => nil})
+    end
+
+    it 'stores entry_station and exit_station'do
+      card.touch_in(testing_station)
+      card.touch_out(test_exit_station)
+      expect(card.stations).to eq({testing_station => test_exit_station})
     end
   end
 end

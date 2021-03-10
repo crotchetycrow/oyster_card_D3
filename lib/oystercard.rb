@@ -10,7 +10,7 @@ class Oystercard
     @balance = balance
     @entry_station = nil
     @exit_station = nil
-    @stations = []
+    @stations = {}
   end
 
   def top_up(amount)
@@ -25,7 +25,7 @@ class Oystercard
       raise 'Insufficient funds'
     end
     @entry_station = station
-    @stations << @entry_station
+    @stations[@entry_station] = exit_station
     @in_journey = true
 
   end
@@ -33,6 +33,7 @@ class Oystercard
   def touch_out(station)
     deduct(MINIMUM_FARE)
     @exit_station = station
+    @stations[@entry_station] = exit_station
     @in_journey = false
   end
 
@@ -50,5 +51,14 @@ class Oystercard
     @balance -= amount
   end
 
-
 end
+
+# > card.touch_in('London Victoria')
+# > card.touch_out('Brixton')
+# > card.history
+# => {London Victoria' => 'Brixton'] }
+# stations = Hash.new
+# stations[entry_station] = exit_station
+# stations = {"Victoria" => nil}
+# > card.touch_out('Brixton')
+#stations[entry_station] = exit_station
