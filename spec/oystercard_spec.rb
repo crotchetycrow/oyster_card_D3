@@ -48,13 +48,19 @@ describe Oystercard do
     it { is_expected.to respond_to(:touch_out)}
 
     it 'store a false value if card was touched out' do
-      expect(subject.touch_out).to be(false)
+      expect(subject.touch_out(testing_station)).to be(false)
      end
 
     it 'deducts card balance by the fare' do
-      expect { subject.touch_out }.to change { subject.balance }.by (-Oystercard::MINIMUM_FARE)
+      expect { subject.touch_out(testing_station) }.to change { subject.balance }.by (-Oystercard::MINIMUM_FARE)
+    end
+
+    it 'expects the card to remember the station where touched out' do
+      card.touch_out(testing_station)
+      expect(card.exit_station).to eq testing_station
     end
   end
+
   describe '#in_journey?' do
     it { is_expected.to respond_to(:in_journey?)}
 
@@ -64,8 +70,23 @@ describe Oystercard do
     end
 
     it 'tells if not in journey' do
-      subject.touch_out
+      subject.touch_out(testing_station)
       expect(card.in_journey?).to eq false
+    end
+  end
+
+  describe "#history" do
+    it "returns an array with travel history" do
+      expect(card.history).to eq card.stations
+    end
+
+    it "stores stations into an array" do
+      expect(card.stations).to eq []
+    end
+
+    it "pushes entry_station into stations array" do
+      card.touch_in(testing_station)
+      expect(card.stations).to eq [testing_station]
     end
   end
 end
