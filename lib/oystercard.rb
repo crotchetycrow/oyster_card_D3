@@ -1,5 +1,5 @@
 class Oystercard
-  attr_reader :balance, :in_journey, :station
+  attr_reader :balance, :in_journey, :entry_station
   DEFAULT_BALANCE = 0
   MINIMUM_BALANCE = 1
   MAXIMUM_BALANCE = 90
@@ -21,7 +21,7 @@ class Oystercard
     if @balance < MINIMUM_BALANCE
       raise 'Insufficient funds'
     end
-    @station = station
+    @entry_station = station
     @in_journey = true
   end
 

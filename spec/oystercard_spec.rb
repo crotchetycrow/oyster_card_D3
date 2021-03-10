@@ -33,13 +33,17 @@ describe Oystercard do
       expect(subject.touch_in(testing_station)).to be(true)
     end
 
-    it'prevents touch in when balance is below £1' do
+    it 'prevents touch in when balance is below £1' do
       expect { subject.touch_in(testing_station) }.to raise_error('Insufficient funds')
     end
 
-  #  it 'expects the card to remember the station where touched in' do
-  #    expect(subject).to respond_to(:touch_in)
-  #  end
+
+    it 'expects the card to remember the station where touched in' do
+      card = Oystercard.new
+      card.top_up(40)
+      card.touch_in(testing_station)
+      expect(subject.entry_station).to eq testing_station
+    end
   end
 
   describe '#touch_out' do
@@ -52,15 +56,12 @@ describe Oystercard do
     it 'deducts card balance by the fare' do
       expect { subject.touch_out }.to change { subject.balance }.by (-Oystercard::MINIMUM_FARE)
     end
-
   end
   describe '#in_journey?' do
     it { is_expected.to respond_to(:in_journey?)}
 
     it 'tells if in journey' do
-      subject.top_up(5)
-      subject.touch_in(testing_station)
-      expect(subject.in_journey?).to eq('in journey')
+      expect(card.in_journey?).to eq('in journey')
     end
 
     it 'tells if not in journey' do
