@@ -2,7 +2,7 @@ require 'oystercard'
 
 describe Oystercard do
 
-  let(:card) { double Oystercard.new }
+  let(:card) { Oystercard.new(40) }
   let(:testing_station) { double :testing_station }
 
   describe 'when first created' do
@@ -39,10 +39,8 @@ describe Oystercard do
 
 
     it 'expects the card to remember the station where touched in' do
-      card = Oystercard.new
-      card.top_up(40)
       card.touch_in(testing_station)
-      expect(subject.entry_station).to eq testing_station
+      expect(card.entry_station).to eq testing_station
     end
   end
 
@@ -61,12 +59,13 @@ describe Oystercard do
     it { is_expected.to respond_to(:in_journey?)}
 
     it 'tells if in journey' do
-      expect(card.in_journey?).to eq('in journey')
+      card.touch_in(testing_station)
+      expect(card.in_journey?).to eq true
     end
 
     it 'tells if not in journey' do
       subject.touch_out
-      expect(subject.in_journey?).to eq('not in journey')
+      expect(card.in_journey?).to eq false
     end
   end
 end

@@ -8,6 +8,7 @@ class Oystercard
 
   def initialize(balance = DEFAULT_BALANCE)
     @balance = balance
+    @entry_station = nil
   end
 
   def top_up(amount)
@@ -31,11 +32,7 @@ class Oystercard
   end
 
   def in_journey?
-    if @in_journey == true
-      'in journey'
-    else @in_journey == false
-      'not in journey'
-    end
+    @entry_station != nil
   end
 
   private
