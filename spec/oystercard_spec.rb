@@ -2,7 +2,8 @@ require 'oystercard'
 
 describe Oystercard do
 
-  let (:card) { Oystercard.new }
+  let(:card) { double Oystercard.new }
+  let(:testing_station) { double :testing_station }
 
   describe 'when first created' do
     it { is_expected.to respond_to(:balance) }
@@ -24,24 +25,24 @@ describe Oystercard do
     end
   end
 
-  describe 'touch_in' do
-    it { is_expected.to respond_to(:touch_in)}
+  describe '#touch_in' do
+    it { is_expected.to respond_to(:touch_in).with(1).argument }
 
     it 'store a true value if card was touched in' do
       subject.top_up(5)
-      expect(subject.touch_in).to be(true)
+      expect(subject.touch_in(testing_station)).to be(true)
     end
 
     it'prevents touch in when balance is below £1' do
-      expect { subject.touch_in }.to raise_error('Insufficient funds')
+      expect { subject.touch_in(testing_station) }.to raise_error('Insufficient funds')
     end
 
-    it 'expects the card to remember the station where touched in' do
-      expect(card).to respond_to(:touch_in).with(1).argument
-    end
+  #  it 'expects the card to remember the station where touched in' do
+  #    expect(subject).to respond_to(:touch_in)
+  #  end
   end
 
-  describe 'touch_out' do
+  describe '#touch_out' do
     it { is_expected.to respond_to(:touch_out)}
 
     it 'store a false value if card was touched out' do
@@ -53,12 +54,12 @@ describe Oystercard do
     end
 
   end
-  describe 'in_journey?' do
+  describe '#in_journey?' do
     it { is_expected.to respond_to(:in_journey?)}
 
     it 'tells if in journey' do
       subject.top_up(5)
-      subject.touch_in
+      subject.touch_in(testing_station)
       expect(subject.in_journey?).to eq('in journey')
     end
 
