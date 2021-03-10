@@ -2,6 +2,8 @@ require 'oystercard'
 
 describe Oystercard do
 
+  let (:card) { Oystercard.new }
+
   describe 'when first created' do
     it { is_expected.to respond_to(:balance) }
 
@@ -23,7 +25,7 @@ describe Oystercard do
   end
 
   describe 'touch_in' do
-    it { is_expected.to respond_to(:touch_in).with(1).argument }
+    it { is_expected.to respond_to(:touch_in)}
 
     it 'store a true value if card was touched in' do
       subject.top_up(5)
@@ -32,6 +34,10 @@ describe Oystercard do
 
     it'prevents touch in when balance is below £1' do
       expect { subject.touch_in }.to raise_error('Insufficient funds')
+    end
+
+    it 'expects the card to remember the station where touched in' do
+      expect(card).to respond_to(:touch_in).with(1).argument
     end
   end
 
