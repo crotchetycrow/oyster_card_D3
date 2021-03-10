@@ -25,7 +25,7 @@ class Oystercard
       raise 'Insufficient funds'
     end
     @entry_station = station
-    @stations[@entry_station] = exit_station
+    @stations[:entry_station] = @entry_station
     @in_journey = true
 
   end
@@ -33,7 +33,7 @@ class Oystercard
   def touch_out(station)
     deduct(MINIMUM_FARE)
     @exit_station = station
-    @stations[@entry_station] = exit_station
+    @stations[:exit_station] = exit_station
     @in_journey = false
   end
 
