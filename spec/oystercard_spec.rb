@@ -23,7 +23,7 @@ describe Oystercard do
   end
 
   describe 'touch_in' do
-    it { is_expected.to respond_to(:touch_in)}
+    it { is_expected.to respond_to(:touch_in).with(1).argument }
 
     it 'store a true value if card was touched in' do
       subject.top_up(5)
