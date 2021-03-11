@@ -18,7 +18,7 @@ class Journey
   end
 
   def calculate_fare
-
+    
 
   end
 

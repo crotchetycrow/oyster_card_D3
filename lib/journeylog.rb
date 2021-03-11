@@ -5,6 +5,16 @@ class JourneyLog
   end
 
   def start(entry_station)
-    @journey_class.new(entry_station)
+    @current_journey = @journey_class.new(entry_station)
+  end
+
+  def finish(exit_station)
+    @current_journey.finish(exit_station)
+  end
+
+  private
+
+  def current_journey
+    @current_journey ? @current_journey : @current_journey = @journey_class.new(nil)
   end
 end
