@@ -20,4 +20,10 @@ describe JourneyLog do
       log.finish(test_station)
     end
   end
+
+  describe '#journeys' do
+    it "Checks that the list of journeys is empty by default" do
+      expect(subject.journeys).to eq []
+    end
+  end
 end
