@@ -14,12 +14,12 @@ describe JourneyLog do
 
   describe "#finish" do
     it "finish a journey" do
-      expect(journey_class).to receive(:new).with(test_station)
-      log.start(test_station)
-      expect(journey_class).to receive(:finish).with(test_station)
-      log.finish(test_station)
-    end
-  end
+       expect(journey_class).to receive(:new).with(test_station)
+       journey = log.start(test_station)
+       expect(journey).to receive(:finish).with(test_station)
+       log.finish(test_station)
+     end
+   end
 
   describe '#journeys' do
     it "Checks that the list of journeys is empty by default" do

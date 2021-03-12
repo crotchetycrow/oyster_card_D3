@@ -11,7 +11,7 @@ class JourneyLog
   end
 
   def finish(exit_station)
-    @current_journey = @journey_class.finish(exit_station)
+    @current_journey.finish(exit_station)
   end
 
   private
